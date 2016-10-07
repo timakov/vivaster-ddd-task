@@ -7,12 +7,12 @@ use Vivaster\Customer\Domain\Model\Customer\Customer;
 /**
  * Class CustomerJsonDataTransformer
  */
-class CustomerJsonDataTransformer extends CustomerDataTransformer
+class CustomerJsonDataTransformer implements CustomerDataTransformer
 {
     /**
      * {@inheritdoc}
      */
-    public function write(Customer $customer)
+    public function transform(Customer $customer)
     {
         $customerDto = new \stdClass();
 
@@ -20,6 +20,6 @@ class CustomerJsonDataTransformer extends CustomerDataTransformer
         $customerDto->country   = $customer->address()->country();
         $customerDto->city      = $customer->address()->street();
 
-        $this->data = json_encode($customerDto);
+        return json_encode($customerDto);
     }
 }

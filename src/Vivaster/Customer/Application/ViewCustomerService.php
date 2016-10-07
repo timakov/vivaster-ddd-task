@@ -13,10 +13,8 @@ final class ViewCustomerService extends CustomerService
      */
     public function execute(ViewCustomerRequest $request)
     {
-        $customer = $this->findCustomerOrFail($request->customerId());
-
-        $this->customerDataTransformer->write($customer);
-
-        return $this->customerDataTransformer->read();
+        return $this->customerDataTransformer->transform(
+            $this->findCustomerOrFail($request->customerId())
+        );
     }
 }

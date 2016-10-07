@@ -5,26 +5,13 @@ namespace Vivaster\Customer\Application\DataTransformer;
 use Vivaster\Customer\Domain\Model\Customer\Customer;
 
 /**
- * Class CustomerDataTransformer
+ * Interface CustomerDataTransformer
  */
-abstract class CustomerDataTransformer
+interface CustomerDataTransformer
 {
     /**
-     * @var mixed
-     */
-    protected $data;
-
-    /**
      * @param Customer $customer
-     * @return void
-     */
-    abstract public function write(Customer $customer);
-
-    /**
      * @return mixed
      */
-    public function read()
-    {
-        return $this->data;
-    }
+    public function transform(Customer $customer);
 }

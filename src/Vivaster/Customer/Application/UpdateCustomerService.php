@@ -49,8 +49,6 @@ final class UpdateCustomerService extends CustomerService
             $this->customerRepository->persist($customer);
         }
 
-        $this->customerDataTransformer->write($customer);
-
-        return $this->customerDataTransformer->read();
+        return $this->customerDataTransformer->transform($customer);
     }
 }
