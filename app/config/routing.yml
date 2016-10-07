@@ -1,1 +1,13 @@
+customer:
+    path:       /customers/{customerId}
+    defaults:   {_controller: customer_controller:getAction}
+    methods:    [GET]
+    requirements:
+        customerId: \d+
 
+customer_change_name:
+    path:       /customers/{customerId}
+    defaults:   {_controller: customer_controller:patchAction}
+    methods:    [PATCH]
+    requirements:
+        customerId: \d+
