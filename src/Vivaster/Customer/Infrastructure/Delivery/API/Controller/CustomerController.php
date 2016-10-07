@@ -1,4 +1,5 @@
 <?php
+
 namespace Vivaster\Customer\Infrastructure\Delivery\API\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
