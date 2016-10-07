@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Vivaster\Customer\Infrastructure\Persistence\InMemoryCustomerRepository;
 use Vivaster\Customer\Domain\Model\Customer\Customer;
 use Vivaster\Customer\Domain\Common\Address;
+use Vivaster\Customer\Domain\Model\Customer\CustomerId;
 
 class CustomerController
 {
@@ -15,14 +16,14 @@ class CustomerController
     {
         $this->repo = new InMemoryCustomerRepository();
 
-        $this->repo->add(new Customer(1, 'Ivan',    new Address('RU', 'qwe')));
-        $this->repo->add(new Customer(2, 'Olesia',  new Address('UA', 'asd')));
-        $this->repo->add(new Customer(3, 'Johnny',  new Address('US', 'zxc')));
+        $this->repo->add(new Customer(new CustomerId(1), 'Ivan',    new Address('RU', 'qwe')));
+        $this->repo->add(new Customer(new CustomerId(2), 'Olesia',  new Address('UA', 'asd')));
+        $this->repo->add(new Customer(new CustomerId(3), 'Johnny',  new Address('US', 'zxc')));
     }
 
     public function getAction($customerId)
     {
-        $customer = $this->repo->ofId($customerId);
+        $customer = $this->repo->ofId(new CustomerId($customerId));
 
         if (!$customer) {
             throw new NotFoundHttpException();
@@ -37,7 +38,7 @@ class CustomerController
 
     public function patchAction($customerId)
     {
-        $customer = $this->repo->ofId($customerId);
+        $customer = $this->repo->ofId(new CustomerId($customerId));
 
         if (!$customer) {
             throw new NotFoundHttpException();
@@ -72,7 +73,7 @@ class CustomerController
         }
 
         if ($changesApplied) {
-            $this->repo->save($customer);
+            $this->repo->persist($customer);
         }
 
         return new JsonResponse([

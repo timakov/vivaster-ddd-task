@@ -8,15 +8,15 @@ namespace Vivaster\Customer\Domain\Model\Customer;
 interface CustomerRepository
 {
     /**
-     * @param int $customerId
+     * @param CustomerId $customerId
      * @return Customer|null
      */
-    public function ofId($customerId);
+    public function ofId(CustomerId $customerId);
 
     /**
      * @param Customer $customer
      * @return void
      */
-    public function save(Customer $customer);
+    public function persist(Customer $customer);
 }
 

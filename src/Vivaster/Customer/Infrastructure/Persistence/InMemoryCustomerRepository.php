@@ -4,7 +4,11 @@ namespace Vivaster\Customer\Infrastructure\Persistence;
 
 use Vivaster\Customer\Domain\Model\Customer\Customer;
 use Vivaster\Customer\Domain\Model\Customer\CustomerRepository;
+use Vivaster\Customer\Domain\Model\Customer\CustomerId;
 
+/**
+ * Class InMemoryCustomerRepository
+ */
 class InMemoryCustomerRepository implements CustomerRepository
 {
     /**
@@ -12,22 +16,33 @@ class InMemoryCustomerRepository implements CustomerRepository
      */
     private $customers = [];
 
-    public function ofId($customerId)
+    /**
+     * {@inheritdoc}
+     */
+    public function ofId(CustomerId $customerId)
     {
-        if (!isset($this->customers[$customerId])) {
+        $id = $customerId->id();
+
+        if (!isset($this->customers[$id])) {
             return null;
         }
 
-        return $this->customers[$customerId];
+        return $this->customers[$id];
     }
 
-    public function save(Customer $customer)
+    /**
+     * {@inheritdoc}
+     */
+    public function persist(Customer $customer)
     {
         $this->add($customer);
     }
 
+    /**
+     * @param Customer $customer
+     */
     public function add(Customer $customer)
     {
-        $this->customers[$customer->id()] = $customer;
+        $this->customers[$customer->id()->id()] = $customer;
     }
 }
