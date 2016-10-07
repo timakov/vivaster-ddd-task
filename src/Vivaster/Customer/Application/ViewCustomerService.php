@@ -15,10 +15,8 @@ final class ViewCustomerService extends CustomerService
     {
         $customer = $this->findCustomerOrFail($request->customerId());
 
-        return [
-            $customer->name(),
-            $customer->address()->country(),
-            $customer->address()->street(),
-        ];
+        $this->customerDataTransformer->write($customer);
+
+        return $this->customerDataTransformer->read();
     }
 }

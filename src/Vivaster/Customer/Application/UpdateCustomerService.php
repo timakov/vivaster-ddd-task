@@ -49,10 +49,8 @@ final class UpdateCustomerService extends CustomerService
             $this->customerRepository->persist($customer);
         }
 
-        return [
-            $customer->name(),
-            $customer->address()->country(),
-            $customer->address()->street(),
-        ];
+        $this->customerDataTransformer->write($customer);
+
+        return $this->customerDataTransformer->read();
     }
 }
