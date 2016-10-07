@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Vivaster\Customer\Infrastructure\Persistence\InMemoryCustomerRepository;
 use Vivaster\Customer\Domain\Model\Customer\Customer;
+use Vivaster\Customer\Domain\Common\Address;
 
 class CustomerController
 {
@@ -14,9 +15,9 @@ class CustomerController
     {
         $this->repo = new InMemoryCustomerRepository();
 
-        $this->repo->add(new Customer(1, 'Ivan', 'RU', 'qwe'));
-        $this->repo->add(new Customer(2, 'Olesia', 'UA', 'asd'));
-        $this->repo->add(new Customer(3, 'Johnny', 'US', 'zxc'));
+        $this->repo->add(new Customer(1, 'Ivan',    new Address('RU', 'qwe')));
+        $this->repo->add(new Customer(2, 'Olesia',  new Address('UA', 'asd')));
+        $this->repo->add(new Customer(3, 'Johnny',  new Address('US', 'zxc')));
     }
 
     public function getAction($customerId)
@@ -29,8 +30,8 @@ class CustomerController
 
         return new JsonResponse([
             $customer->name(),
-            $customer->country(),
-            $customer->street(),
+            $customer->address()->country(),
+            $customer->address()->street(),
         ]);
     }
 
@@ -50,24 +51,34 @@ class CustomerController
         $newCountry = isset($data['country']) ? $data['country'] : null;
         $newStreet  = isset($data['street']) ? $data['street'] : null;
 
-        if ($customer->rename($newName)) {
-            $changesApplied = true;
+        if (isset($newName)) {
+            if ($customer->rename($newName)) {
+                $changesApplied = true;
+            }
         }
 
-        if ($customer->move($newCountry, $newStreet)) {
-            $changesApplied = true;
+        if (isset($newCountry) || isset($newStreet)) {
+            if (!isset($newCountry)) {
+                $newCountry = $customer->address()->country();
+            }
+
+            if (!isset($newStreet)) {
+                $newStreet = $customer->address()->street();
+            }
+
+            if ($customer->move(new Address($newCountry, $newStreet))) {
+                $changesApplied = true;
+            }
         }
 
         if ($changesApplied) {
             $this->repo->save($customer);
-            $customer = $this->repo->ofId($customerId);
-            var_dump($customer);
         }
 
         return new JsonResponse([
             $customer->name(),
-            $customer->country(),
-            $customer->street(),
+            $customer->address()->country(),
+            $customer->address()->street(),
         ]);
     }
 }

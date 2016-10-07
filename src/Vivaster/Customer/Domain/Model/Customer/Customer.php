@@ -2,22 +2,24 @@
 
 namespace Vivaster\Customer\Domain\Model\Customer;
 
+use Vivaster\Customer\Domain\Common\Address;
+
 class Customer
 {
     private $id;
 
     private $name;
 
-    private $country;
+    /**
+     * @var Address
+     */
+    private $address;
 
-    private $street;
-
-    public function __construct($id, $name, $country, $street)
+    public function __construct($id, $name, Address $address)
     {
         $this->id       = $id;
         $this->name     = $name;
-        $this->country  = $country;
-        $this->street   = $street;
+        $this->address  = $address;
     }
 
     public function id()
@@ -30,14 +32,12 @@ class Customer
         return $this->name;
     }
 
-    public function country()
+    /**
+     * @return Address
+     */
+    public function address()
     {
-        return $this->country;
-    }
-
-    public function street()
-    {
-        return $this->street;
+        return $this->address;
     }
 
     public function rename($name)
@@ -58,33 +58,29 @@ class Customer
         return false;
     }
 
-    public function move($country = null, $street = null)
+    /**
+     * @param Address $address
+     *
+     * @return bool
+     */
+    public function move(Address $address)
     {
-        $moved = false;
-
-        if (isset($country)) {
-            $country = trim($country);
-
-            if ($this->country !== $country) {
-                $this->country = $country;
-                $moved = true;
-            }
+        if ($this->address()->equals($address)) {
+            return false;
         }
 
-        if (isset($street)) {
-            $street  = trim($street);
+        $this->setAddress($address);
 
-            if ($this->street !== $street) {
-                $this->street = $street;
-                $moved = true;
-            }
-        }
+        // fire an event
 
-        if ($moved) {
-            // fire an event
-            return true;
-        }
+        return true;
+    }
 
-        return false;
+    /**
+     * @param Address $address
+     */
+    private function setAddress(Address $address)
+    {
+        $this->address = $address;
     }
 }
