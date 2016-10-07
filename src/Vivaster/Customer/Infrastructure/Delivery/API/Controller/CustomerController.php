@@ -7,7 +7,7 @@ use Vivaster\Customer\Infrastructure\Persistence\InMemoryCustomerRepository;
 use Vivaster\Customer\Application\ViewCustomerService;
 use Vivaster\Customer\Application\UpdateCustomerService;
 
-class CustomerController
+final class CustomerController
 {
     public function getAction($customerId)
     {

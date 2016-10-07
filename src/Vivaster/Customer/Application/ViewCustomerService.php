@@ -5,27 +5,13 @@ namespace Vivaster\Customer\Application;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Vivaster\Customer\Domain\Model\Customer\CustomerRepository;
 use Vivaster\Customer\Domain\Model\Customer\CustomerId;
+use Vivaster\Customer\Domain\Common\ApplicationService;
 
 /**
  * Class ViewCustomerService
  */
-class ViewCustomerService
+final class ViewCustomerService extends CustomerService
 {
-    /**
-     * @var CustomerRepository;
-     */
-    private $customerRepository;
-
-    /**
-     * ViewCustomerService constructor.
-     *
-     * @param CustomerRepository $customerRepository
-     */
-    public function __construct(CustomerRepository $customerRepository)
-    {
-        $this->customerRepository = $customerRepository;
-    }
-
     /**
      * @param string $customerId
      * @return array

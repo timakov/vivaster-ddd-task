@@ -10,7 +10,7 @@ use Vivaster\Customer\Domain\Model\Customer\CustomerId;
 /**
  * Class InMemoryCustomerRepository
  */
-class InMemoryCustomerRepository implements CustomerRepository
+final class InMemoryCustomerRepository implements CustomerRepository
 {
     /**
      * @var Customer[]

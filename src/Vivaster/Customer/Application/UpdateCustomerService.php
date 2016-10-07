@@ -2,31 +2,13 @@
 
 namespace Vivaster\Customer\Application;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Vivaster\Customer\Domain\Model\Customer\CustomerRepository;
-use Vivaster\Customer\Domain\Model\Customer\CustomerId;
 use Vivaster\Customer\Domain\Common\Address;
 
 /**
  * Class UpdateCustomerService
  */
-class UpdateCustomerService
+final class UpdateCustomerService extends CustomerService
 {
-    /**
-     * @var CustomerRepository;
-     */
-    private $customerRepository;
-
-    /**
-     * UpdateCustomerService constructor.
-     *
-     * @param CustomerRepository $customerRepository
-     */
-    public function __construct(CustomerRepository $customerRepository)
-    {
-        $this->customerRepository = $customerRepository;
-    }
-
     /**
      * @param string $customerId
      * @param array $data
@@ -35,11 +17,7 @@ class UpdateCustomerService
      */
     public function execute($customerId, array $data)
     {
-        $customer = $this->customerRepository->ofId(new CustomerId($customerId));
-
-        if (!$customer) {
-            throw new NotFoundHttpException('Customer not found');
-        }
+        $customer = $this->findCustomerOrFail($customerId);
 
         $changesApplied = false;
 

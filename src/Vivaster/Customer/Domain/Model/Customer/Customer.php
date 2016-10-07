@@ -7,7 +7,7 @@ use Vivaster\Customer\Domain\Common\Address;
 /**
  * Class Customer
  */
-class Customer
+final class Customer
 {
     /**
      * @var CustomerId
