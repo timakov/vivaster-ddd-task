@@ -3,6 +3,7 @@
 namespace Vivaster\Customer\Application;
 
 use Vivaster\Customer\Domain\Common\Address;
+use Vivaster\Customer\Application\UpdateCustomerRequest;
 
 /**
  * Class UpdateCustomerService
@@ -10,20 +11,19 @@ use Vivaster\Customer\Domain\Common\Address;
 final class UpdateCustomerService extends CustomerService
 {
     /**
-     * @param string $customerId
-     * @param array $data
+     * @param UpdateCustomerRequest $request
      *
      * @return array
      */
-    public function execute($customerId, array $data)
+    public function execute(UpdateCustomerRequest $request)
     {
-        $customer = $this->findCustomerOrFail($customerId);
+        $customer = $this->findCustomerOrFail($request->customerId());
 
         $changesApplied = false;
 
-        $newName    = isset($data['name'])    ? $data['name'] : null;
-        $newCountry = isset($data['country']) ? $data['country'] : null;
-        $newStreet  = isset($data['street'])  ? $data['street'] : null;
+        $newName    = $request->name();
+        $newCountry = $request->country();
+        $newStreet  = $request->street();
 
         if (isset($newName)) {
             if ($customer->rename($newName)) {
