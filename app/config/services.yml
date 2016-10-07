@@ -4,5 +4,25 @@ parameters:
 #    parameter_name: value
 
 services:
+
     customer_controller:
         class: Vivaster\Customer\Infrastructure\Delivery\API\Controller\CustomerController
+        calls:
+              - [setContainer, ['@service_container']]
+
+    customer.app.action.view:
+        class: Vivaster\Customer\Application\ViewCustomerService
+        arguments: ['@customer.repo.array', '@customer.app.action.view.transformer']
+
+    customer.app.action.update:
+        class: Vivaster\Customer\Application\UpdateCustomerService
+        arguments: ['@customer.repo.array', '@customer.app.action.update.transformer']
+
+    customer.app.action.view.transformer:
+        class: Vivaster\Customer\Application\DataTransformer\CustomerJsonDataTransformer
+
+    customer.app.action.update.transformer:
+        class: Vivaster\Customer\Application\DataTransformer\CustomerJsonDataTransformer
+
+    customer.repo.array:
+        class: Vivaster\Customer\Infrastructure\Persistence\InMemoryCustomerRepository
