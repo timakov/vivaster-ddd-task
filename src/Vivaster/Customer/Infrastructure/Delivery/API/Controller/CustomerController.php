@@ -4,8 +4,8 @@ namespace Vivaster\Customer\Infrastructure\Delivery\API\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Vivaster\Customer\Infrastructure\Persistence\InMemoryCustomerRepository;
-use Vivaster\Customer\Domain\Model\Customer\ViewCustomerService;
-use Vivaster\Customer\Domain\Model\Customer\UpdateCustomerService;
+use Vivaster\Customer\Application\ViewCustomerService;
+use Vivaster\Customer\Application\UpdateCustomerService;
 
 class CustomerController
 {

@@ -1,8 +1,10 @@
 <?php
 
-namespace Vivaster\Customer\Domain\Model\Customer;
+namespace Vivaster\Customer\Application;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Vivaster\Customer\Domain\Model\Customer\CustomerRepository;
+use Vivaster\Customer\Domain\Model\Customer\CustomerId;
 
 /**
  * Class ViewCustomerService
