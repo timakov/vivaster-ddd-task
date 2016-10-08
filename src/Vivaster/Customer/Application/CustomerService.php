@@ -7,6 +7,7 @@ use Vivaster\Customer\Domain\Model\Customer\Customer;
 use Vivaster\Customer\Domain\Model\Customer\CustomerId;
 use Vivaster\Customer\Application\DataTransformer\CustomerDataTransformer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class CustomerService
@@ -24,18 +25,26 @@ abstract class CustomerService
     protected $customerDataTransformer;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * CustomerService constructor.
      *
      * @param CustomerRepository $customerRepository
      * @param CustomerDataTransformer $customerDataTransformer
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         CustomerRepository $customerRepository,
-        CustomerDataTransformer $customerDataTransformer
+        CustomerDataTransformer $customerDataTransformer,
+        EventDispatcherInterface $eventDispatcher
     )
     {
         $this->customerRepository       = $customerRepository;
         $this->customerDataTransformer  = $customerDataTransformer;
+        $this->eventDispatcher          = $eventDispatcher;
     }
 
     /**

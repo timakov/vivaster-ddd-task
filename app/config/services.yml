@@ -12,11 +12,17 @@ services:
 
     customer.app.action.view:
         class: Vivaster\Customer\Application\ViewCustomerService
-        arguments: ['@customer.repo.array', '@customer.app.action.view.transformer']
+        arguments: ['@customer.repo.array', '@customer.app.action.view.transformer', '@event_dispatcher']
 
     customer.app.action.update:
         class: Vivaster\Customer\Application\UpdateCustomerService
-        arguments: ['@customer.repo.array', '@customer.app.action.update.transformer']
+        arguments: ['@customer.repo.array', '@customer.app.action.update.transformer', '@event_dispatcher']
+
+    event_listener.customer:
+        class: Vivaster\Customer\Application\EventListener\SomeEventListener
+        tags:
+            - {name: kernel.event_listener, event: customer.event.renamed,   method: doSomething1}
+            - {name: kernel.event_listener, event: customer.event.relocated, method: doSomething2}
 
     customer.app.action.view.transformer:
         class: Vivaster\Customer\Application\DataTransformer\CustomerJsonDataTransformer
